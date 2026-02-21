@@ -15,26 +15,21 @@ public:
         return ans;
     }
     bool is_prime(int n) {
-        // 0 and 1 are not prime numbers
         if (n <= 1) {
             return false;
         }
-        // 2 is the only even prime number
         if (n == 2) {
             return true;
         }
-        // All other even numbers are not prime
         if (n % 2 == 0) {
             return false;
         }
 
-        // Check for odd divisors from 3 up to the square root of n
         for (int i = 3; i * i <= n; i += 2) {
             if (n % i == 0) {
                 return false; // Found a divisor, not prime
             }
         }
-
-        return true; // No divisors found, it is prime
+        return true;
     }
 };
