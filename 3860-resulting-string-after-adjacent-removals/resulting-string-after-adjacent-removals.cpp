@@ -1,15 +1,17 @@
 class Solution {
 public:
-    bool areAdjacent(char a, char b) {
-        return abs(a - b) == 1;
-    }
     string resultingString(string s) {
-        for (int i = 0; i < s.size() ;) {
-            if ((i+1)<s.size() && (s[i] == 'a' && s[i + 1] == 'z') || (s[i] == 'z' && s[i + 1] == 'a') || areAdjacent(s[i],s[i+1])) {
-                s.erase(i, 2);
-                if (i != 0) i--;
-            } else i++;
+        stack<char>st;
+        for(int i=0;i<s.size();i++){
+            if(!st.empty() && ( abs(st.top()-s[i])==1 || (st.top()=='z' && s[i]=='a') || (st.top()=='a' && s[i]=='z') )) st.pop();
+            else st.push(s[i]);
         }
-        return s;
+        string temp;
+        while(!st.empty()){
+            temp.push_back(st.top());
+            st.pop();
+        }
+        reverse(temp.begin(),temp.end());
+        return temp;
     }
 };
