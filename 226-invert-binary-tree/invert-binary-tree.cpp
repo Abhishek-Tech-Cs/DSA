@@ -25,5 +25,4 @@ public:
         fun(root);
         return root;
     }
-//please upvote...
 };
