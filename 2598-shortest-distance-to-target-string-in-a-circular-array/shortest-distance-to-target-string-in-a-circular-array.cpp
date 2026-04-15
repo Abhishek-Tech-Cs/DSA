@@ -17,8 +17,8 @@ public:
 
         if(startIndex==0) i=n-1;
         else i=startIndex-1;
+        
         while(i!=startIndex){
-        cout<<i<<" ";
             if(words[i]==target) break;
             if(i==0) i=n-1;
             else i--;
