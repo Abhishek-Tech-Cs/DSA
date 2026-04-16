@@ -22,15 +22,9 @@ public:
                     else if(temp>idx) end=mid-1;
                     else st=mid+1;
                 }
-                // if(i==8)
-                // cout<<currIdx<<":"<<size<<" ";
-                // cout<<m[nums[i]][currIdx]<<" ";
                 if(currIdx==0){
-                    // i+(len-idx)
-                    // cout<<m[nums[i]][0]<<":"<<m[nums[i]][1]<<" ";
                     ans.push_back(min(m[nums[i]][1]-m[nums[i]][0],abs(m[nums[i]][currIdx]+numSize-m[nums[i]][size-1])));
                 }else if(currIdx==size-1){
-                    // cout<<i<<" ";
                     ans.push_back(min(m[nums[i]][0]+numSize-m[nums[i]][currIdx],abs(m[nums[i]][size-1]-m[nums[i]][size-2])));
                 }else{
                     ans.push_back(min(m[nums[i]][currIdx]-m[nums[i]][currIdx-1],m[nums[i]][currIdx+1]-m[nums[i]][currIdx]));
