@@ -15,7 +15,7 @@ public:
             headA=headA->next;
         }
         while(headB!=NULL){
-            if(m[headB]) return headB;
+            if(m.find(headB)!=m.end()) return headB;
             headB=headB->next;
         }
         return NULL;
