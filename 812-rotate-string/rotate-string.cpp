@@ -7,7 +7,6 @@ public:
             s.push_back(s.front());
             s.erase(s.begin());
         }
-        if(s==goal) return true;
         return false;
     }
 };
