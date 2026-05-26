@@ -7,7 +7,6 @@ public:
         for(auto i:word){
             m[i]=true;
             if(m[tolower(i)] && m[toupper(i)] && check[tolower(i)]<1){
-                cout<<i<<" ";
                 ans++;
                 check[tolower(i)]++;
             }            
