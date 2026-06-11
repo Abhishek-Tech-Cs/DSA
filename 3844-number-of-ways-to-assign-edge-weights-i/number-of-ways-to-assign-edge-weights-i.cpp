@@ -13,7 +13,7 @@ public:
         return ans;
     }
     int solve(vector<vector<int>>&adj,int curr=1,int pre=-1){
-        if(curr>adj.size() || adj[curr].size()==0) return 0;
+        if(adj[curr].size()==0) return 0;
         int ans=0;
         for(int i=0;i<adj[curr].size();i++){
             if(pre!=adj[curr][i]) ans=max(ans,1+solve(adj,adj[curr][i],curr));
