@@ -11,23 +11,29 @@
 class Solution {
 public:
     int pairSum(ListNode* head) {
-        unordered_map<int,int>m;
-        ListNode* temp=head;
-        int i=0,size=0;
-        while(temp!=NULL){
-            size++;
-            temp=temp->next;
-        }
-        
-        while(head!=NULL){
-            if(m.count(size-i-1)>0) m[size-i-1]+=head->val;
-            else m[i]=head->val;
-            i++;
-            head=head->next;
+        ListNode* fast=head->next;
+        ListNode* slow=head;
+        while(fast->next!=NULL){
+            fast=fast->next->next;
+            slow=slow->next;
         }
 
+        ListNode* curr=slow->next;
+        ListNode* pre=NULL;
+        while(curr!=NULL){
+            ListNode* post=curr->next;
+            curr->next=pre;
+            pre=curr;
+            curr=post;
+        }
+        slow->next=pre;
+        slow=slow->next;
         int ans=INT_MIN;
-        for(auto i:m) ans=max(ans,i.second);
-        return ans;
+        while(slow!=NULL){
+            ans=max(ans,slow->val+head->val);
+            head=head->next;
+            slow=slow->next;
+        } 
+        return ans;   
     }
 };
