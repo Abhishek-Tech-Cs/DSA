@@ -1,23 +1,24 @@
 class Solution {
 public:
     long long countMajoritySubarrays(vector<int>& nums, int target) {
-        long long res=0;
         int cumSum=0;
-        unordered_map<int,int>cumSumFre;
-        cumSumFre[0]=1;
+        unordered_map<int,int>m;
+        m[0]=1;
+        long long ans=0;
         int validLeft=0;
         for(auto i:nums){
             if(i==target){
-                validLeft+=cumSumFre[cumSum];
+                validLeft+=m[cumSum];
                 cumSum++;
             }else{
                 cumSum--;
-                validLeft-=cumSumFre[cumSum];
+                validLeft-=m[cumSum];
             }
 
-            cumSumFre[cumSum]+=1;
-            res+=validLeft;
+            m[cumSum]+=1;
+            validLeft=validLeft<0?0:validLeft;
+            ans+=validLeft;
         }
-        return res;
+        return ans;
     }
 };
