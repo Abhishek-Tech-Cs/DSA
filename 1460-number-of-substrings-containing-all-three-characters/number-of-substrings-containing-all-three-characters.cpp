@@ -5,13 +5,10 @@ public:
         int st=0,end=0;
         int ans=0;
         while(end<s.size()){
-            int idx=s[end]-'a';
-            m[idx]++;
-            int id=s[st]-'a';
-            while(m[id]>1 && st<end){
-                m[id]--;
+            m[s[end]-'a']++;
+            while(m[s[st]-'a']>1 && st<end){
+                m[s[st]-'a']--;
                 st++;
-                id=s[st]-'a';
             }
             if(m[0]>0 && m[1]>0 && m[2]>0) ans+=st+1;
             end++;
