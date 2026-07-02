@@ -1,110 +1,65 @@
 class Solution {
 public:
-    int n;
-    
-    vector<vector<int>> directions{{1, 0}, {-1, 0}, {0, -1}, {0, 1}};
-
-    bool check(vector<vector<int>>& distNearestThief, int sf) {
-        queue<pair<int, int>> que;
-
-        vector<vector<bool>> visited(n, vector<bool>(n, false));
-        //0,0 --> n-1, n-1
-        que.push({0, 0});
-        visited[0][0] = true;
-
-        if(distNearestThief[0][0] < sf)
-            return false;
-
-        while(!que.empty()) {
-            int curr_i = que.front().first;
-            int curr_j = que.front().second;
-
-            que.pop();
-
-            if(curr_i == n-1 && curr_j == n-1) {
-                return true;
-            }
-
-            for(vector<int>& dir : directions) {
-                int new_i = curr_i + dir[0];
-                int new_j = curr_j + dir[1];
-
-                if(new_i >= 0 && new_i < n && new_j >= 0 && new_j < n && visited[new_i][new_j] != true) {
-                    if(distNearestThief[new_i][new_j] < sf) {
-                        continue; //reject this cell
-                    }
-                    que.push({new_i, new_j});
-                    visited[new_i][new_j] = true;
-                }
-
-            }
-        }
-
-        return false;
-        
-    }
-
     int maximumSafenessFactor(vector<vector<int>>& grid) {
-        n = grid.size();
-
-        //Step-1 Precalculation of distNearestThief - for each cell
-        vector<vector<int>> distNearestThief(n, vector<int>(n, -1));
-        queue<pair<int, int>> que;
-        vector<vector<bool>> visited(n, vector<bool>(n, false));
-
-        //push all cells in queue where theives are present
-        for(int i = 0; i < n; i++) {
-            for(int j = 0; j < n; j++) {
-                if(grid[i][j] == 1) {
-                    que.push({i, j});
-                    visited[i][j] = true;
+        int n=grid.size();
+        vector<vector<int>>g(n,vector<int>(n,0));
+        queue<pair<int,int>>q;
+        vector<vector<bool>>vis(n,vector<bool>(n,true));
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                if(grid[i][j]==1){
+                    q.push({i,j});
+                    vis[i][j]=false;
                 }
             }
         }
-
-        int level = 0;
-        while(!que.empty()) {
-            int size = que.size();
-
-            while(size--) {
-                int curr_i = que.front().first;
-                int curr_j = que.front().second;
-                que.pop();
-                distNearestThief[curr_i][curr_j] = level;
-                for(vector<int>& dir : directions) {
-                    int new_i = curr_i + dir[0];
-                    int new_j = curr_j + dir[1];
-
-                    if(new_i < 0 || new_i >= n || new_j < 0 || new_j >= n || visited[new_i][new_j]) {
-                        continue;
-                    }
-
-                    que.push({new_i, new_j});
-                    visited[new_i][new_j] = true;
-
-                }
-
+        while(!q.empty()){
+            int i=q.front().first;
+            int j=q.front().second;
+            q.pop();
+            if(i>0 && vis[i-1][j]){
+                q.push({i-1,j});
+                g[i-1][j]=g[i][j]+1;
+                vis[i-1][j]=false;
             }
-            level++;
-        }
-
-        //Step-2 Apply binary search on SF
-        int l = 0;
-        int r = 400;
-        int result = 0;
-
-        while(l <= r) {
-            int mid_sf = l + (r-l)/2;
-
-            if(check(distNearestThief, mid_sf)) {
-                result = mid_sf;
-                l = mid_sf+1;
-            } else {
-                r = mid_sf-1;
+            if(j>0 && vis[i][j-1]){
+                q.push({i,j-1});
+                g[i][j-1]=g[i][j]+1;
+                vis[i][j-1]=false;
+            }
+            if(i<n-1 && vis[i+1][j]){
+                q.push({i+1,j});
+                g[i+1][j]=g[i][j]+1;
+                vis[i+1][j]=false;
+            }
+            if(j<n-1 && vis[i][j+1]){
+                q.push({i,j+1});
+                g[i][j+1]=g[i][j]+1;
+                vis[i][j+1]=false;
             }
         }
+        int ans=0;
+        int st=0,end=2*n;
+        while(st<=end){
+            int mid=st+(end-st)/2;
+            vector<vector<bool>>vis(n,vector<bool>(n,false));
+            if(checkPath(n,g,vis,mid)){
+                ans=max(ans,mid);
+                st=mid+1;
+            }else end=mid-1;
+        }
+        return ans;
+    }
+    bool checkPath(int n,vector<vector<int>>&g,vector<vector<bool>>&vis,int target,int row=0,int col=0){
+        if(row<0 || row>=n || col<0 || col>=n || g[row][col]<target || vis[row][col]) return false;
+        if(row==n-1 && col==n-1) return true;
 
-        return result;
-        
+        vis[row][col]=true;
+        bool up=checkPath(n,g,vis,target,row-1,col);
+        bool down=checkPath(n,g,vis,target,row+1,col);
+        bool left=checkPath(n,g,vis,target,row,col-1);
+        bool right=checkPath(n,g,vis,target,row,col+1);
+
+        return up||down||left||right;
     }
 };
