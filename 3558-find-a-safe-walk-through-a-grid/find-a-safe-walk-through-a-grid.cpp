@@ -1,28 +1,40 @@
 class Solution {
 public:
     bool findSafeWalk(vector<vector<int>>& grid, int health) {
-        int m=grid.size(),n=grid[0].size();
-        vector<vector<int>>dist(m,vector<int>(n,INT_MIN));
-        queue<pair<int,pair<int,int>>>q;
-        q.push({health-grid[0][0],{0,0}});
-        dist[0][0]=grid[0][0];
-        int dx[4]={0,0,1,-1};
-        int dy[4]={1,-1,0,0};
-        while(!q.empty()){
-           int h=q.front().first,i=q.front().second.first,j=q.front().second.second;
-           q.pop();
-           if(h<dist[i][j])continue;
-           for(int k=0;k<4;k++){
-            int ni=i+dx[k],nj=j+dy[k];
-            if(ni>=0 && ni<m && nj>=0 && nj<n){
-                int nh = h-grid[ni][nj];
-                if(nh>dist[ni][nj]){
-                    dist[ni][nj]=nh;
-                    q.push({nh,{ni,nj}});
-                }
+        int m=grid.size();
+        int n=grid[0].size();
+        vector<vector<bool>>vis(m,vector<bool>(n,true));
+        vector<vector<int>>store(m,vector<int>(n,INT_MAX));
+        store[0][0]=grid[0][0];
+        deque<pair<int,int>>dq;
+        dq.push_front({0,0});
+        while(!dq.empty()){
+            int x=dq.front().first;
+            int y=dq.front().second;
+            dq.pop_front();
+            if(x>0 && store[x-1][y]>(store[x][y]+grid[x-1][y])){
+                store[x-1][y]=store[x][y]+grid[x-1][y];
+                if(grid[x-1][y]==1) dq.push_back({x-1,y});
+                else dq.push_front({x-1,y});
             }
-           }
+            if(y>0 && store[x][y-1]>(store[x][y]+grid[x][y-1])){
+                store[x][y-1]=store[x][y]+grid[x][y-1];
+                if(grid[x][y-1]==1) dq.push_back({x,y-1});
+                else dq.push_front({x,y-1});
+            }
+            if(x<m-1 && store[x+1][y]>(store[x][y]+grid[x+1][y])){
+                store[x+1][y]=store[x][y]+grid[x+1][y];
+                if(grid[x+1][y]==1) dq.push_back({x+1,y});
+                else dq.push_front({x+1,y});
+            }
+            if(y<n-1 && store[x][y+1]>(store[x][y]+grid[x][y+1])){
+                store[x][y+1]=store[x][y]+grid[x][y+1];
+                if(grid[x][y+1]==1) dq.push_back({x,y+1});
+                else dq.push_front({x,y+1});
+            }
         }
-        return dist[m-1][n-1]>=1;
+        int finalVal=store[m-1][n-1];
+        if(health-finalVal>=1) return true;
+        return false;
     }
 };
