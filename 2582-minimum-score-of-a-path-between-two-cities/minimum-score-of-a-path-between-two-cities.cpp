@@ -11,20 +11,19 @@ public:
             adj[u].push_back({v,dis});
             adj[v].push_back({u,dis});
         }
-        vector<bool>inQueue(n,false);
         queue<int>q;
         q.push(n);
+        vis[n]=true;
         while(!q.empty()){
             int node=q.front();
-            vis[node]=true;
             q.pop();
             for(auto i:adj[node]){
                 int ngbr=i.first;
                 int cost=i.second;
+                ans=min(ans,cost);
                 if(!vis[ngbr]){
-                    ans=min(ans,cost);
-                    if(!inQueue[ngbr]) q.push(ngbr);
-                    inQueue[ngbr]=true;
+                    q.push(ngbr);
+                    vis[ngbr]=true;
                 }
             }
         }
