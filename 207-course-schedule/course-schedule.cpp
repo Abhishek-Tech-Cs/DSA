@@ -2,15 +2,12 @@ class Solution {
 public:
     bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
         vector<vector<int>>graph(numCourses);
-        for(auto i:prerequisites){
+        vector<int>inDegree(numCourses,0);
+        for(auto &i:prerequisites){
             int u=i[0];
             int v=i[1];
             graph[v].push_back(u);
-        }
-
-        vector<int>inDegree(numCourses,0);
-        for(auto i:graph){
-            for(auto ngbr:i) inDegree[ngbr]++;
+            inDegree[u]++;
         }
 
         queue<int>q;
