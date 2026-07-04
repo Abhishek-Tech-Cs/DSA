@@ -1,39 +1,31 @@
 class Solution {
 public:
     bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
-    vector<vector<int>> adj(numCourses);
-    vector<int> indegree(numCourses, 0);
-
-    // Build graph
-    for (auto &p : prerequisites) {
-        adj[p[1]].push_back(p[0]);
-        indegree[p[0]]++;
-    }
-
-    queue<int> q;
-
-    // Push all nodes with indegree 0
-    for (int i = 0; i < numCourses; i++) {
-        if (indegree[i] == 0)
-            q.push(i);
-    }
-
-    int count = 0;
-
-    while (!q.empty()) {
-        int node = q.front();
-        q.pop();
-        count++;
-
-        for (int nbr : adj[node]) {
-            indegree[nbr]--;
-
-            if (indegree[nbr] == 0)
-                q.push(nbr);
+        vector<vector<int>>graph(numCourses);
+        for(auto i:prerequisites){
+            int u=i[0];
+            int v=i[1];
+            graph[v].push_back(u);
         }
-    }
 
-    // If all nodes were processed, no cycle exists
-    return count == numCourses;
-}
+        vector<int>inDegree(numCourses,0);
+        for(auto i:graph){
+            for(auto ngbr:i) inDegree[ngbr]++;
+        }
+
+        queue<int>q;
+        for(int i=0;i<numCourses;i++) if(inDegree[i]==0) q.push(i);
+
+        int count=0;
+        while(!q.empty()){
+            int node=q.front();
+            q.pop();
+            count++;
+            for(auto i:graph[node]){
+                inDegree[i]--;
+                if(inDegree[i]==0) q.push(i);
+            }
+        }
+        return count==numCourses;
+    }
 };
