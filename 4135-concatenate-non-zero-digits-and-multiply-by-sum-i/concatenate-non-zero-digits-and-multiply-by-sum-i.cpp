@@ -10,7 +10,6 @@ public:
             n/=10;
         }
         int num=0;
-        cout<<x;
         for(int i=x.size()-1;i>=0;i--){
             num=num*10+(x[i]-'0');
         }
