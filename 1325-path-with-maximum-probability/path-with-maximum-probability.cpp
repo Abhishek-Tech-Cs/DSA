@@ -14,7 +14,7 @@ public:
         }
 
         priority_queue<pair<double,int>>q;
-        q.push({-1,start_node});            //cost node
+        q.push({1,start_node});            //cost node
         vector<double>maxProb(n,0);
         while(!q.empty()){
             double cost=q.top().first;
@@ -23,8 +23,7 @@ public:
             for(auto i:adj[node]){
                 int ngbr=i.first;
                 double toNgbrCost=i.second;
-                double totalCost=toNgbrCost;
-                if(cost!=-1) totalCost=totalCost*cost;
+                double totalCost=toNgbrCost*cost;
                 if(totalCost>maxProb[ngbr]){
                     maxProb[ngbr]=totalCost;
                     q.push({totalCost,ngbr});
