@@ -13,7 +13,6 @@ public:
             ptr++;
         }
 
-        vector<int>vis(n,false);
         priority_queue<pair<double,int>>q;
         q.push({-1,start_node});            //cost node
         vector<double>maxProb(n,0);
