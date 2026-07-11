@@ -26,7 +26,6 @@ public:
         }
         int ans=INT_MIN;
         for(int i=1;i<=n;i++){
-            if(i==k) continue;
             if(minTime[i]==INT_MAX) return -1;
             ans=max(ans,minTime[i]);
         }
