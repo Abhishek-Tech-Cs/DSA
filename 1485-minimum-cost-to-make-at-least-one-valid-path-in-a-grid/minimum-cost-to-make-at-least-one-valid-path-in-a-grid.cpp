@@ -10,6 +10,7 @@ public:
         while(!dq.empty()){
             auto [blockCost,row,col]=dq.front();
             dq.pop_front();
+            if(row==m-1 && col==n-1) cout<<blockCost<<" ";
             int costDown=blockCost,costUp=blockCost,costLeft=blockCost,costRight=blockCost;
             if(row>0){
                 if(grid[row][col]!=4) costUp++;
@@ -23,7 +24,7 @@ public:
                 if(grid[row][col]!=3) costDown++;
                 if(costDown<cost[row+1][col]){
                     cost[row+1][col]=costDown;
-                    if(costUp==blockCost) dq.push_front({costDown,row+1,col});
+                    if(costDown==blockCost) dq.push_front({costDown,row+1,col});
                     else dq.push_back({costDown,row+1,col});
                 }
             }
@@ -31,7 +32,7 @@ public:
                 if(grid[row][col]!=2) costLeft++;
                 if(costLeft<cost[row][col-1]){
                     cost[row][col-1]=costLeft;
-                    if(costUp==blockCost) dq.push_front({costLeft,row,col-1});
+                    if(costLeft==blockCost) dq.push_front({costLeft,row,col-1});
                     else dq.push_back({costLeft,row,col-1});
                 }
             }
@@ -39,7 +40,7 @@ public:
                 if(grid[row][col]!=1) costRight++;
                 if(costRight<cost[row][col+1]){
                     cost[row][col+1]=costRight;
-                    if(costUp==blockCost) dq.push_front({costRight,row,col+1});
+                    if(costRight==blockCost) dq.push_front({costRight,row,col+1});
                     else dq.push_back({costRight,row,col+1});
                 }
             }
