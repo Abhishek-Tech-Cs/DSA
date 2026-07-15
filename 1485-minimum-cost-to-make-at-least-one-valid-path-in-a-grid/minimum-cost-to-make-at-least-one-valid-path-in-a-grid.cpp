@@ -10,7 +10,6 @@ public:
         while(!dq.empty()){
             auto [blockCost,row,col]=dq.front();
             dq.pop_front();
-            if(row==m-1 && col==n-1) cout<<blockCost<<" ";
             int costDown=blockCost,costUp=blockCost,costLeft=blockCost,costRight=blockCost;
             if(row>0){
                 if(grid[row][col]!=4) costUp++;
