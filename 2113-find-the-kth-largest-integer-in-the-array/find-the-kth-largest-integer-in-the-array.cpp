@@ -7,7 +7,6 @@ public:
             return str1<str2;
         });
         int n=nums.size();
-        for(auto i:nums) cout<<i<<" ";
         return nums[n-k];
     }
 };
