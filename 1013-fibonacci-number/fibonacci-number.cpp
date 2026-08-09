@@ -1,15 +1,13 @@
 class Solution {
 public:
     int fib(int n) {
-        vector<int>memory(n+1,-1);
-        return findFib(n,memory);
-    }
-    int findFib(int n, vector<int> &memory){
+        int d1=0,d2=1;
         if(n<=1) return n;
-        if(memory[n]!=-1) return memory[n];
-
-        int fibSum=findFib(n-1,memory)+findFib(n-2,memory);
-        memory[n]=fibSum;
-        return fibSum;
+        for(int i=2;i<n;i++){
+            int curr=d1+d2;
+            d1=d2;
+            d2=curr;
+        }
+        return d1+d2;
     }
 };
