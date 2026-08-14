@@ -1,20 +1,17 @@
 class Solution {
 public:
     int rob(vector<int>& nums) {
-        if(nums.size()==1) return nums[0];
-        vector<int>d1(101,-1);
-        vector<int>d2(101,-1);
-        return max(dfs(nums,0,d1,false),dfs(nums,1,d2));
+        int n=nums.size();
+        if(n==1) return nums[0];
+        return max(dfs(nums,0,n-1),dfs(nums,1,n));
     }
-    int dfs(vector<int> &nums,int i,vector<int> &d,bool check=true){
-        if(i>=nums.size()) return 0;
-        if(i==nums.size()-1 && !check) return 0;
-
-        if(d[i]!=-1) return d[i];
-
-        int steal=nums[i]+dfs(nums,i+2,d,check);
-        int skip=dfs(nums,i+1,d,check);
-
-        return d[i]=max(steal,skip);
+    int dfs(vector<int> &nums,int st,int end){
+        int pre1=0,pre2=nums[st];
+        for(int i=st+1;i<end;i++){
+            int temp=pre1+nums[i];
+            pre1=pre2;
+            pre2=max(temp,pre2);
+        }
+        return max(pre1,pre2);
     }
 };
