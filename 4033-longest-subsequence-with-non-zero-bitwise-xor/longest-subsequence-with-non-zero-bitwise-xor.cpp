@@ -1,14 +1,14 @@
 class Solution {
 public:
     int longestSubsequence(vector<int>& nums) {
-        sort(nums.begin(),nums.end());
-        int ans=0;
+        int n=nums.size();
         int x=0;
-        for(int i=0;i<nums.size();i++){
-            if(i==nums.size()-1 && int(x^nums[i])==0 && x!=0) return ans;
-            else x^=nums[i];
-            ans++;
+        bool check=false;
+        for(int i=0;i<n;i++){
+            x^=nums[i];
+            if(nums[i]>0) check=true;
         }
-        return x==0?0:ans;
+        if(!check) return 0;
+        return x ? n : n-1;
     }
 };
