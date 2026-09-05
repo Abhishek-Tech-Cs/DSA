@@ -4,13 +4,14 @@ public:
     int n;
     bool canCross(vector<int>& stones) {
         n = stones.size();
-        dp.assign(n, vector<int>(n, -1));
+        if(stones[1] != 1) return false;
+        dp.resize(n+1, vector<int>(n+1, -1));
         return solve(stones);
     }
-    int solve(vector<int>& stones, int i = 0, int pre = -1,int k = 0){
-        if(i >= n - 1) return true;
+    int solve(vector<int>& stones, int i = 1, int pre = 0,int k = 1){
+        if(i >= n - 1 && stones[i] - stones[pre] == k) return true;
 
-        if(dp[pre+1][i] != -1) return dp[pre+1][i];
+        if(dp[pre][i] != -1) return dp[pre][i];
 
         int temp1 = k - 1;
         int temp2 = k;
@@ -29,6 +30,6 @@ public:
         while(j < n && stones[j] - stones[i] < temp3) j++;
         if(j < n && stones[j] - stones[i] == temp3) take3 = solve(stones, j, i, temp3);
 
-        return dp[pre+1][i] = take1 || take2 || take3;
+        return dp[pre][i] = take1 || take2 || take3;
     }
 };
