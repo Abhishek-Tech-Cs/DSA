@@ -15,10 +15,6 @@ public:
                 }
             }
         }
-        for(int i = 0;i<adj.size();i++){
-            for(auto j:adj[i]) cout<<i<<":"<<j<<" ";
-            cout<<endl;
-        }
 
         int ans = 0;
 
