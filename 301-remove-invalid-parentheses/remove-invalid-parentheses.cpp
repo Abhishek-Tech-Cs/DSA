@@ -3,20 +3,24 @@ public:
     vector<string> removeInvalidParentheses(string s) {
         unordered_set<string>ans;
         string t;
-        solve(s, ans, 0, t, 0);
         int size = 0;
-        for(auto i : ans) size = max(size, (int)i.size());
+        solve(s, ans, 0, t, 0, size);
 
         vector<string>temp;
-        for(auto i:ans)
-            if(size == i.size()) temp.push_back(i);
+        for(auto i:ans) temp.push_back(i);
 
         return temp;
     }
-    void solve(string &s, unordered_set<string>& ans, int i, string &temp, int count){
+    void solve(string &s, unordered_set<string>& ans, int i, string &temp, int count, int &maxSize){
         if(count < 0) return ;
         if(i >= s.size()){
-            if(count == 0) ans.insert(temp);
+            if(count == 0 && temp.size() > maxSize){
+                maxSize = temp.size();
+                ans.clear();
+            }
+            if(count == 0 && maxSize == temp.size()){
+                ans.insert(temp);
+            }
             return ;
         }
 
@@ -24,10 +28,10 @@ public:
 
         if(s[i] == '(' || s[i] == ')'){
             temp.push_back(s[i]);
-            solve(s, ans, i + 1, temp, s[i] == '(' ? count + 1 : count - 1);
+            solve(s, ans, i + 1, temp, s[i] == '(' ? count + 1 : count - 1, maxSize);
             temp.pop_back();
         }
-        solve(s, ans, i + 1, temp, count);
+        solve(s, ans, i + 1, temp, count, maxSize);
         if(s[i] >= 'a' && s[i] <= 'z') temp.pop_back();
     }
 };
