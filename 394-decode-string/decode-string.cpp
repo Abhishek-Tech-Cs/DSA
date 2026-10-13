@@ -5,7 +5,7 @@ public:
         return decode(s, i);
     }
 
-    string decode(string& s, int& i) {
+    string decode(string s, int& i) {
         string result = "";
         int num = 0;
         while(i < s.size()) {
